@@ -1,15 +1,17 @@
 package business;
 
 public enum magicTypeEnum {
-    FIRE (2), WATER(2), EARTH(2), AIR(2), LIGHT(4), DARK(5), NONE(1);
+    FIRE (2), WATER(2), EARTH(2), AIR(2), LIGHT(4), DARK(5);
 
-    private final Integer damageBonus;
+    private final Integer Multiplier;
 
-    magicTypeEnum(Integer damageBonus) { //elv itt felesleges a lathatosagot megadni
-        this.damageBonus = damageBonus;
+
+    magicTypeEnum(Integer Multiplier) { //elv itt felesleges a lathatosagot megadni
+        this.Multiplier = Multiplier;
     }
 
-    public Integer getDamageBonus() {
-        return this.damageBonus;
+    public Integer getMultiplier() {
+        return this.Multiplier;
     }
+
 }
