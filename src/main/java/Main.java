@@ -29,10 +29,7 @@ public class Main {
 
                     case 3:
                         inventory.printInventoryWeight();
-                        inventory.displayOptions();
-                        System.out.println("\nNext option: ");
                         option = Integer.parseInt(scanner.nextLine());
-
                         break;
                     case 4:
                         inventory.displayItems();
@@ -41,9 +38,9 @@ public class Main {
                     default:
                         System.out.println("Invalid option");
                         inventory.displayOptions();
+
                         System.out.println("\nNext option: ");
                         option = Integer.parseInt(scanner.nextLine());
-
                         break;
                 }
             }

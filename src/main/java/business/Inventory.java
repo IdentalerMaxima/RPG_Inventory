@@ -15,21 +15,16 @@ public class Inventory {
         Item item = items.get(index);
         }
 
-    public void displayItems() {
-        int index = 1;
-        System.out.println("Inventory: ");
-        System.out.println("--------------------------------------------------------------------------------");
-        if (items.size() == 0) {
-            System.out.println("No items in inventory");
-        } else {
-            for (Item item : items) {
-                System.out.println(index + ". " + item.getName());
-                index++;
-            }
-        }
-        System.out.println("--------------------------------------------------------------------------------");
-        displayOptions();
-        System.out.println("\nNext option: ");
+    public void displayOptions(){
+        System.out.println("1. Add item");
+        System.out.println("2. Remove item");
+        System.out.println("3. Print inventory weight");
+        System.out.println("4. Display inventory");
+        System.out.println("8. Exit");
+    }
+
+    public String getSpaceLeft() {
+        return "Space left: " + (weightCapacity - currentWeight);
     }
 
     public void addItem(){
@@ -86,22 +81,32 @@ public class Inventory {
         }
     }
 
-    public void displayOptions(){
-        System.out.println("1. Add item");
-        System.out.println("2. Remove item");
-        System.out.println("3. Print inventory weight");
-        System.out.println("4. Display inventory");
-//        System.out.println("5. Remove weapon");
-//        System.out.println("6. Add armor");
-//        System.out.println("7. Remove armor");
-        System.out.println("8. Exit");
-    }
-
-    public String getSpaceLeft() {
-        return "Space left: " + (weightCapacity - currentWeight);
-    }
     public void printInventoryWeight(){
         System.out.println("Current Weight: " + currentWeight + "\n");
+        displayOptions();
+        System.out.println("\nNext option: ");
     }
+
+    public void displayItems() {
+        int index = 1;
+        System.out.println("Inventory: ");
+        System.out.println("--------------------------------------------------------------------------------");
+        if (items.size() == 0) {
+            System.out.println("No items in inventory");
+        } else {
+            for (Item item : items) {
+                System.out.println(index + ". " + item.getName());
+                index++;
+            }
+        }
+        System.out.println("--------------------------------------------------------------------------------");
+        displayOptions();
+        System.out.println("\nNext option: ");
+    }
+
+
+
+
+
 }
 
