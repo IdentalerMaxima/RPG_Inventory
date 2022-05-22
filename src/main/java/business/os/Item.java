@@ -1,8 +1,16 @@
 package business.os;
 
-public class Item {
-    protected boolean isMagic = false;
-    protected int weight = 2;
-    protected int durability = 10;
+public class Item{
+    private boolean isMagic;
+    private int weight;
+    private int durability;
 
+    public Item(){
+    }
+
+    public Item(boolean isMagic, int weight, int durability) {
+        this.isMagic = isMagic;
+        this.weight = weight;
+        this.durability = durability;
+    }
 }
