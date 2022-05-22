@@ -13,4 +13,17 @@ public class Item{
         this.weight = weight;
         this.durability = durability;
     }
+
+    public boolean isMagic() {
+        return isMagic;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public int getDurability() {
+        return durability;
+    }
+
 }
