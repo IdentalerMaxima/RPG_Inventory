@@ -3,6 +3,7 @@ package business;
 import business.os.Item;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Inventory {
@@ -28,8 +29,8 @@ public class Inventory {
         System.out.println("Item name: ");
         String name = scanner.nextLine();
 
-        System.out.println("Armor or weapon? (a/w): ");
-        String armorOrWeapon = scanner.nextLine();
+        System.out.println("Armor, weapon or else? (a/w/e): ");
+        String armorWeaponElse = scanner.nextLine();
 
         System.out.println("Item durability: ");
         int durability = Integer.parseInt(scanner.nextLine());
@@ -37,43 +38,61 @@ public class Inventory {
         System.out.println("Item weight: ");
         int weight = Integer.parseInt(scanner.nextLine());
 
-        System.out.println("Item is magic? (true/false)");
+        System.out.println("Is the item magical (y/n): ");
+        String magical = scanner.nextLine();
+        boolean isMagic;
+        if(magical.equals("y")){
+             isMagic = true;
+        }else if(magical.equals("n")){
+             isMagic = false;
+        }else {
+            System.out.println("Invalid input");
+            isMagic = false;
+        }
 
-        boolean isMagic = Boolean.parseBoolean(scanner.nextLine());
+        if (armorWeaponElse.equals("a") && isMagic) { //magic armor
 
-        if (armorOrWeapon.equals("a") && isMagic) {
+            System.out.println("Specify magic type (fire/water/earth/air/light/dark): ");
+            magicTypeEnum magicType = magicTypeEnum.valueOf(scanner.nextLine().toUpperCase(Locale.ROOT));
+
             System.out.println("Item armor amount: ");
             int armorAmount = Integer.parseInt(scanner.nextLine());
-            System.out.println("Specify magic type (fire/water/earth/air/light/dark): ");
-            String magicType = scanner.nextLine();
+
             Armor item  = new Armor(name, magicType, weight, durability, armorAmount);
             addItemToInv(item);
 
-        } else if (armorOrWeapon.equals("w") && isMagic) {
+        } else if (armorWeaponElse.equals("w") && isMagic) { //magic weapon
+            System.out.println("Specify magic type (fire/water/earth/air/light/dark) ");
+            magicTypeEnum magicType = magicTypeEnum.valueOf(scanner.nextLine().toUpperCase(Locale.ROOT));
+
             System.out.println("Item damage: ");
             int damage = Integer.parseInt(scanner.nextLine());
-
-            System.out.println("Specify magic type (fire/water/earth/air/light/dark): ");
-            String magicType = scanner.nextLine();
 
             Weapon item = new Weapon(name, magicType, weight, durability, damage);
             addItemToInv(item);
 
-        } else if (armorOrWeapon.equals("a") && isMagic == false) {
+
+        } else if (armorWeaponElse.equals("a")) { //non-magic armor
             System.out.println("Item armor amount: ");
             int armorAmount = Integer.parseInt(scanner.nextLine());
+
             Armor item = new Armor(name, weight, durability, armorAmount);
             addItemToInv(item);
 
-        } else if (armorOrWeapon.equals("w") && isMagic == false) {
+        } else if (armorWeaponElse.equals("w")) { //non-magic weapon
             System.out.println("Item damage: ");
             int damage = Integer.parseInt(scanner.nextLine());
+
             Weapon weapon = new Weapon(name, weight, durability, damage);
             addItemToInv(weapon);
+
+        }else {
+            Item item = new Item(name, weight, durability); //Item is not magic
+            addItemToInv(item);
         }
     }
 
-    public void addItemToInv(Item item) {
+    public void addItemToInv(Item item) {   //check if item can be added
         if (currentWeight + item.getWeight() <= weightCapacity) {
             items.add(item);
             currentWeight += item.getWeight();
@@ -81,9 +100,13 @@ public class Inventory {
         else {
             System.out.println("Not enough space!");
         }
+
         System.out.println("\n" + getSpaceLeft() +"\n");
+
         displayOptions();
+
         System.out.println("\nNext option: ");
+
         }
 
     public void removeItem(){
@@ -125,7 +148,26 @@ public class Inventory {
         } else {
             for (Item item : items) {
                 System.out.println(index + ". " + item.getName());
-                System.out.println();
+                if (item instanceof Armor) {
+                    if (((Armor) item).magicType != null) {
+                        System.out.println("Armor: " + ((Armor) item).getArmor() + "\tMagic type: " + ((Armor) item).getMagicType());
+
+                    }else if(((Armor) item).magicType == null){
+                        System.out.println("Armor: " + ((Armor) item).getArmor());
+                    }
+                } else if (item instanceof Weapon) {
+                    if (((Weapon) item).magicType != null) {
+                        System.out.println("Damage: " + ((Weapon) item).getDamage() + "\tMagic type: " + ((Weapon) item).getMagicType());
+                    }else if(((Weapon) item).magicType == null){
+                        System.out.println("Damage: " + ((Weapon) item).getDamage());
+                    }
+
+                }
+                System.out.println("Weight: " + item.getWeight() + "\tDurability: " + item.getDurability());
+
+                if (index != items.size()) {
+                    System.out.println("------------------------------");
+                }
                 index++;
             }
         }

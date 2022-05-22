@@ -13,10 +13,22 @@ public class Weapon extends Item {
 
     }
 
-    public Weapon(String name, String magicType, int weight, int durability, int damage) { //magic
+    public Weapon(String name, magicTypeEnum magicType, int weight, int durability, int damage) { //magic
         super(name, weight, durability);
         this.damage = damage;
-        this.magicType = magicTypeEnum.valueOf(magicType);
+        this.magicType = magicType;
+    }
+
+    public int getDamage() {
+        if (magicType == null) {
+            return damage;
+        } else {
+            return damage * magicType.getMultiplier();
+        }
+    }
+
+    public magicTypeEnum getMagicType() {
+        return magicType;
     }
 
 }
