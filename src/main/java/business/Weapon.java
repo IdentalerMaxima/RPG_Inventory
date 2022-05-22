@@ -6,8 +6,8 @@ public class Weapon extends Item {
 
     int damage = 10;
 
-    public Weapon(Boolean isMagic, int weight, int durability, Integer damage) {
-        super(isMagic, weight, durability);
+    public Weapon(String name, Boolean isMagic, int weight, int durability, Integer damage) {
+        super(name, isMagic, weight, durability);
         this.damage = damage;
 
     }
