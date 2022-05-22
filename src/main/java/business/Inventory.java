@@ -9,11 +9,7 @@ public class Inventory {
     int weightCapacity = 100;
     int currentWeight = 0;
 
-    ArrayList<Item> items = new ArrayList<Item>();
-
-    public void getItem(int index) {
-        Item item = items.get(index);
-        }
+    ArrayList<Item> items = new ArrayList<>();
 
     public void displayOptions(){
         System.out.println("1. Add item");
@@ -27,34 +23,67 @@ public class Inventory {
         return "Space left: " + (weightCapacity - currentWeight);
     }
 
-    public void addItem(){
+    public void addItem() {
         Scanner scanner = new Scanner(System.in);
-            System.out.println("Item name: ");
-            String name = scanner.nextLine();
+        System.out.println("Item name: ");
+        String name = scanner.nextLine();
 
-            System.out.println("Item is magic? (true/false)");
-            boolean isMagic = Boolean.parseBoolean(scanner.nextLine());
+        System.out.println("Armor or weapon? (a/w): ");
+        String armorOrWeapon = scanner.nextLine();
 
-            System.out.println("Item durability: ");
-            int durability = Integer.parseInt(scanner.nextLine());
+        System.out.println("Item durability: ");
+        int durability = Integer.parseInt(scanner.nextLine());
 
-            System.out.println("Item weight: ");
-            int weight = Integer.parseInt(scanner.nextLine());
+        System.out.println("Item weight: ");
+        int weight = Integer.parseInt(scanner.nextLine());
 
-            if(currentWeight + weight <= weightCapacity){
+        System.out.println("Item is magic? (true/false)");
 
-            currentWeight += weight;
+        boolean isMagic = Boolean.parseBoolean(scanner.nextLine());
 
-            items.add(new Item(name, isMagic, weight, durability));
-            }
-            else{
-                System.out.println("You can't carry that much weight!");
-            }
+        if (armorOrWeapon.equals("a") && isMagic) {
+            System.out.println("Item armor amount: ");
+            int armorAmount = Integer.parseInt(scanner.nextLine());
+            System.out.println("Specify magic type (fire/water/earth/air/light/dark): ");
+            String magicType = scanner.nextLine();
+            Armor item  = new Armor(name, magicType, weight, durability, armorAmount);
+            addItemToInv(item);
 
-            System.out.println("Item successfully added!");
-            System.out.println("\n" + getSpaceLeft() +"\n");
-            displayOptions();
-            System.out.println("\nNext option: ");
+        } else if (armorOrWeapon.equals("w") && isMagic) {
+            System.out.println("Item damage: ");
+            int damage = Integer.parseInt(scanner.nextLine());
+
+            System.out.println("Specify magic type (fire/water/earth/air/light/dark): ");
+            String magicType = scanner.nextLine();
+
+            Weapon item = new Weapon(name, magicType, weight, durability, damage);
+            addItemToInv(item);
+
+        } else if (armorOrWeapon.equals("a") && isMagic == false) {
+            System.out.println("Item armor amount: ");
+            int armorAmount = Integer.parseInt(scanner.nextLine());
+            Armor item = new Armor(name, weight, durability, armorAmount);
+            addItemToInv(item);
+
+        } else if (armorOrWeapon.equals("w") && isMagic == false) {
+            System.out.println("Item damage: ");
+            int damage = Integer.parseInt(scanner.nextLine());
+            Weapon weapon = new Weapon(name, weight, durability, damage);
+            addItemToInv(weapon);
+        }
+    }
+
+    public void addItemToInv(Item item) {
+        if (currentWeight + item.getWeight() <= weightCapacity) {
+            items.add(item);
+            currentWeight += item.getWeight();
+        }
+        else {
+            System.out.println("Not enough space!");
+        }
+        System.out.println("\n" + getSpaceLeft() +"\n");
+        displayOptions();
+        System.out.println("\nNext option: ");
         }
 
     public void removeItem(){
@@ -96,6 +125,7 @@ public class Inventory {
         } else {
             for (Item item : items) {
                 System.out.println(index + ". " + item.getName());
+                System.out.println();
                 index++;
             }
         }
