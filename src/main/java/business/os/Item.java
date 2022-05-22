@@ -1,20 +1,20 @@
 package business.os;
 
+import business.magicTypeEnum;
+
 public class Item{
     private String name;
     private boolean isMagic;
     private int weight;
     private int durability;
+    private magicTypeEnum magicType;
 
-    public Item(){
-    }
-
-    public Item(String name, Boolean isMagic, int weight, int durability) {
+    public Item(String name, int weight, int durability) {
         this.name = name;
-        this.isMagic = isMagic;
         this.weight = weight;
         this.durability = durability;
     }
+
     public String getName() {
         return name;
     }
