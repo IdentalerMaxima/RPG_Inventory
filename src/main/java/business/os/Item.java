@@ -7,7 +7,6 @@ public class Item{
     private boolean isMagic;
     private int weight;
     private int durability;
-    private magicTypeEnum magicType;
 
     public Item(String name, int weight, int durability) {
         this.name = name;
@@ -17,10 +16,6 @@ public class Item{
 
     public String getName() {
         return name;
-    }
-
-    public boolean isMagic() {
-        return isMagic;
     }
 
     public int getWeight() {
