@@ -4,18 +4,31 @@ import business.os.Item;
 
 public class Armor extends Item {
 
-    int armorAmount;
+    int baseArmor;
     magicTypeEnum magicType;
 
-    public Armor(String name, int weight, int durability, int armorAmount) { //non-magic
+    public Armor(String name, int weight, int durability, int baseArmor) { //non-magic
         super(name, weight, durability);
-        this.armorAmount = armorAmount;
+        this.baseArmor = baseArmor;
     }
 
-    public Armor(String name, String magicType, int weight, int durability, int armorAmount) {
+    public Armor(String name, magicTypeEnum magicType, int weight, int durability, int baseArmor) {
         super(name, weight, durability);
-        this.armorAmount = armorAmount;
-        this.magicType = magicTypeEnum.valueOf(magicType);
+        this.baseArmor = baseArmor;
+        this.magicType = magicType;
+
+    }
+
+    public int getArmor() {
+        if (magicType == null) {
+            return baseArmor;
+        } else {
+            return baseArmor * magicType.getMultiplier();
+        }
+    }
+
+    public magicTypeEnum getMagicType() {
+        return magicType;
     }
 
 }
