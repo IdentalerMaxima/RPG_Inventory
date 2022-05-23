@@ -12,18 +12,60 @@ public class Inventory {
 
     ArrayList<Item> items = new ArrayList<>();
 
+    //menu1 methods
+    public void menu1(){
+
+        boolean exit = false;
+        while (exit == false){
+            try {
+                displayOptions();
+                Scanner scanner = new Scanner(System.in);
+                int option = Integer.parseInt(scanner.nextLine());
+
+                switch (option) {
+                    case 1 -> {
+                        addItem();
+                        System.out.println("Item successfully added!");
+                        menu1();
+                    }
+                    case 2 -> {
+                        removeItem();
+                        menu1();
+                        System.out.println("Item successfully removed!");
+                    }
+                    case 3 -> {
+                        printInventoryWeight();
+                        menu1();
+                    }
+                    case 4 -> {
+                        displayItems();
+                        menu1();
+                    }
+                    case 8 -> exit = true;
+                    default -> {
+                        System.out.println("Invalid option");
+                        displayOptions();
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+                System.out.println("Please enter a valid option");
+        }
+    }
+        System.out.println("Thank you for using the inventory system!");
+
+    }
     public void displayOptions(){
-        System.out.println("1. Add item");
-        System.out.println("2. Remove item");
-        System.out.println("3. Print inventory weight");
-        System.out.println("4. Display inventory");
-        System.out.println("8. Exit");
+        System.out.println("\n" + "What would you like to do?\n" +
+                "1. Add an item\n" +
+                "2. Remove an item\n" +
+                "3. Display the weight of the inventory\n" +
+                "4. Display the items in the inventory\n" +
+                "5. Display the weight capacity of the inventory\n" +
+                "6. Display the magic items in the inventory\n" +
+                "7. Display the non-magic items in the inventory\n" +
+                "8. Exit");
     }
-
-    public String getSpaceLeft() {
-        return "Space left: " + (weightCapacity - currentWeight);
-    }
-
     public void addItem() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Item name: ");
@@ -42,9 +84,9 @@ public class Inventory {
         String magical = scanner.nextLine();
         boolean isMagic;
         if(magical.equals("y")){
-             isMagic = true;
+            isMagic = true;
         }else if(magical.equals("n")){
-             isMagic = false;
+            isMagic = false;
         }else {
             System.out.println("Invalid input");
             isMagic = false;
@@ -90,25 +132,7 @@ public class Inventory {
             Item item = new Item(name, weight, durability); //Item is not magic
             addItemToInv(item);
         }
-    }
-
-    public void addItemToInv(Item item) {   //check if item can be added
-        if (currentWeight + item.getWeight() <= weightCapacity) {
-            items.add(item);
-            currentWeight += item.getWeight();
-        }
-        else {
-            System.out.println("Not enough space!");
-        }
-
-        System.out.println("\n" + getSpaceLeft() +"\n");
-
-        displayOptions();
-
-        System.out.println("\nNext option: ");
-
-        }
-
+    }                 //option 1
     public void removeItem(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Index of item to remove: ");
@@ -131,14 +155,12 @@ public class Inventory {
             displayOptions();
             System.out.println("\nNext option: ");
         }
-    }
-
+    }               //option 2
     public void printInventoryWeight(){
         System.out.println("Current Weight: " + currentWeight + "\n");
         displayOptions();
         System.out.println("\nNext option: ");
-    }
-
+    }     //option 3
     public void displayItems() {
         int index = 1;
         System.out.println("Inventory: ");
@@ -174,7 +196,32 @@ public class Inventory {
         System.out.println("--------------------------------------------------------------------------------");
         displayOptions();
         System.out.println("\nNext option: ");
+    }            //option 4
+
+    //menu2 methods
+
+    //extra methods
+    public String getSpaceLeft() {
+        return "Space left: " + (weightCapacity - currentWeight);
     }
+    public void addItemToInv(Item item) {   //check if item can be added
+        if (currentWeight + item.getWeight() <= weightCapacity) {
+            items.add(item);
+            currentWeight += item.getWeight();
+        }
+        else {
+            System.out.println("Not enough space!");
+        }
+
+        System.out.println("\n" + getSpaceLeft() +"\n");
+    }
+
+
+
+
+
+
+
 
 
 
