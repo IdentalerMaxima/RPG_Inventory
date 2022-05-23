@@ -246,9 +246,12 @@ public class Inventory {
 
         System.out.println("Are you sure you want to remove " + items.get(selectedItem).getName() + "? (y/n)");
         if (scanner.nextLine().equals("y")) {
+            currentWeight -= items.get(selectedItem).getWeight();
             items.remove(selectedItem);
             System.out.println("Item successfully removed!");
             System.out.println("\n" + getSpaceLeft() +"\n");
+            menu2();
+
         }
         else if (scanner.nextLine().equals("n")){
             System.out.println("Item was not removed!");
