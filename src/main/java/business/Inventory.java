@@ -152,7 +152,8 @@ public class Inventory {
         }
     }              //option 2
     public void printInventoryWeight(){
-        System.out.println("Current Weight: " + currentWeight + "\n");
+        System.out.println("Current Weight: " + 
+                currentWeight + "\n");
     }     //option 3
     public void displayItems() {
         int index = 1;
@@ -188,8 +189,87 @@ public class Inventory {
         }
         System.out.println("--------------------------------------------------------------------------------");
     }            //option 4
+    public void selectItem(){
+        menu2();
+    }       //option 5
 
     //menu2 methods
+    public void menu2(){
+        int selectedItem = getIndex();
+        
+        boolean exit = false;
+        while (exit == false){
+            try {
+                Scanner scanner = new Scanner(System.in);
+                displaySelectionOptions();
+                int selectedOption = Integer.parseInt(scanner.nextLine());
+                switch (selectedOption) {
+                    case 1:
+                        getItemDetails(selectedItem);
+                        break;
+                    case 2:
+                        removeItem(selectedItem);
+                        break;
+                    case 3:
+                        addItemDescription(selectedItem);
+                        break;
+                    case 4:
+                        upgradeItem(selectedItem);
+                        break;
+                    case 5:
+                        exit = true;
+                        break;
+                        
+                }
+                
+            } catch (Exception e) {
+                System.out.println("Invalid input" + e);
+                menu2();
+            }
+        }
+    }
+
+    private void upgradeItem(int selectedItem) {
+    }
+
+    private void addItemDescription(int selectedItem) {
+    }
+
+    private void removeItem(int selectedItem) {
+    }
+
+    private void getItemDetails(int selectedItem) {
+    }
+
+    public void displaySelectionOptions(){
+        System.out.println("\nSelect an option: " +
+                "\n1. Details of item" +
+                "\n2. Remove item" +
+                "\n3. Add description" +
+                "\n4. Upgrade item" +
+                "\n5. Back to main menu");
+        
+    }
+    public int getIndex(){
+        System.out.println("Index of item to select: ");
+        Scanner scanner = new Scanner(System.in);
+        int selectedItem = Integer.parseInt(scanner.nextLine());
+        
+        if (selectedItem > items.size() || selectedItem < 1) {
+            System.out.println("Invalid index!");
+            System.out.println("Do you want to try again? (y/n)");
+            if (scanner.nextLine().equals("y")) {
+                getIndex();
+            } else if(scanner.nextLine().equals("n")) {
+                selectedItem = -1;
+            }
+            else {
+                System.out.println("Invalid input!");
+                getIndex();
+            }
+        }
+        return selectedItem;
+    }
 
     //extra methods
     public String getSpaceLeft() {
