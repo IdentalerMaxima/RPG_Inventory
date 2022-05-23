@@ -25,13 +25,11 @@ public class Inventory {
                 switch (option) {
                     case 1 -> {
                         addItem();
-                        System.out.println("Item successfully added!");
                         menu1();
                     }
                     case 2 -> {
-                        removeItem();
+                        quickRemove();
                         menu1();
-                        System.out.println("Item successfully removed!");
                     }
                     case 3 -> {
                         printInventoryWeight();
@@ -56,14 +54,11 @@ public class Inventory {
 
     }
     public void displayOptions(){
-        System.out.println("\n" + "What would you like to do?\n" +
+        System.out.println("What would you like to do?\n" +
                 "1. Add an item\n" +
                 "2. Remove an item\n" +
                 "3. Display the weight of the inventory\n" +
                 "4. Display the items in the inventory\n" +
-                "5. Display the weight capacity of the inventory\n" +
-                "6. Display the magic items in the inventory\n" +
-                "7. Display the non-magic items in the inventory\n" +
                 "8. Exit");
     }
     public void addItem() {
@@ -133,7 +128,7 @@ public class Inventory {
             addItemToInv(item);
         }
     }                 //option 1
-    public void removeItem(){
+    public void quickRemove(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Index of item to remove: ");
         int removeIndex = Integer.parseInt(scanner.nextLine()) - 1;
@@ -155,11 +150,9 @@ public class Inventory {
             displayOptions();
             System.out.println("\nNext option: ");
         }
-    }               //option 2
+    }              //option 2
     public void printInventoryWeight(){
         System.out.println("Current Weight: " + currentWeight + "\n");
-        displayOptions();
-        System.out.println("\nNext option: ");
     }     //option 3
     public void displayItems() {
         int index = 1;
@@ -194,8 +187,6 @@ public class Inventory {
             }
         }
         System.out.println("--------------------------------------------------------------------------------");
-        displayOptions();
-        System.out.println("\nNext option: ");
     }            //option 4
 
     //menu2 methods
@@ -207,6 +198,7 @@ public class Inventory {
     public void addItemToInv(Item item) {   //check if item can be added
         if (currentWeight + item.getWeight() <= weightCapacity) {
             items.add(item);
+            System.out.println("Item successfully added!");
             currentWeight += item.getWeight();
         }
         else {
