@@ -16,7 +16,7 @@ public class Inventory {
     public void menu1(){
 
         boolean exit = false;
-        while (exit == false){
+        while (!exit){
             try {
                 displayOptions();
                 Scanner scanner = new Scanner(System.in);
@@ -39,6 +39,10 @@ public class Inventory {
                         displayItems();
                         menu1();
                     }
+                    case 5 -> {
+                        selectItem();
+                        menu1();
+                    }
                     case 8 -> exit = true;
                     default -> {
                         System.out.println("Invalid option");
@@ -48,18 +52,19 @@ public class Inventory {
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
                 System.out.println("Please enter a valid option");
+            }
         }
-    }
-        System.out.println("Thank you for using the inventory system!");
-
+            System.out.println("Thank you for using the inventory system!");
     }
     public void displayOptions(){
-        System.out.println("What would you like to do?\n" +
-                "1. Add an item\n" +
-                "2. Remove an item\n" +
-                "3. Display the weight of the inventory\n" +
-                "4. Display the items in the inventory\n" +
-                "8. Exit");
+        System.out.println("""
+                What would you like to do?
+                1. Add an item
+                2. Remove an item
+                3. Display the weight of the inventory
+                4. Display the items in the inventory
+                5. Select item
+                8. Exit""");
     }
     public void addItem() {
         Scanner scanner = new Scanner(System.in);
@@ -198,28 +203,29 @@ public class Inventory {
         int selectedItem = getIndex();
         
         boolean exit = false;
-        while (exit == false){
+        while (!exit){
             try {
                 Scanner scanner = new Scanner(System.in);
                 displaySelectionOptions();
                 int selectedOption = Integer.parseInt(scanner.nextLine());
                 switch (selectedOption) {
-                    case 1:
+                    case 1 -> {
                         getItemDetails(selectedItem);
-                        break;
-                    case 2:
+                        menu2();
+                    }
+                    case 2 -> {
                         removeItem(selectedItem);
-                        break;
-                    case 3:
+                        menu2();
+                    }
+                    case 3 -> {
                         addItemDescription(selectedItem);
-                        break;
-                    case 4:
+                        menu2();
+                    }
+                    case 4 -> {
                         upgradeItem(selectedItem);
-                        break;
-                    case 5:
-                        exit = true;
-                        break;
-                        
+                        menu2();
+                    }
+                    case 5 -> exit = true;
                 }
                 
             } catch (Exception e) {
@@ -236,18 +242,40 @@ public class Inventory {
     }
 
     private void removeItem(int selectedItem) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Are you sure you want to remove " + items.get(selectedItem).getName() + "? (y/n)");
+        if (scanner.nextLine().equals("y")) {
+            items.remove(selectedItem);
+            System.out.println("Item successfully removed!");
+            System.out.println("\n" + getSpaceLeft() +"\n");
+        }
+        else if (scanner.nextLine().equals("n")){
+            System.out.println("Item was not removed!");
+        } else {
+            System.out.println("Invalid input!");
+            System.out.println("Do you wish to continue?");
+            if (scanner.nextLine().equals("y")) {
+                removeItem(selectedItem);
+            }else{
+                menu2();
+            }
+        }
+
     }
 
     private void getItemDetails(int selectedItem) {
     }
 
     public void displaySelectionOptions(){
-        System.out.println("\nSelect an option: " +
-                "\n1. Details of item" +
-                "\n2. Remove item" +
-                "\n3. Add description" +
-                "\n4. Upgrade item" +
-                "\n5. Back to main menu");
+        System.out.println("""
+
+                Select an option:\s
+                1. Details of item
+                2. Remove item
+                3. Add description
+                4. Upgrade item
+                5. Back to main menu""");
         
     }
     public int getIndex(){
@@ -263,13 +291,10 @@ public class Inventory {
             } else if(scanner.nextLine().equals("n")) {
                 selectedItem = -1;
             }
-            else {
-                System.out.println("Invalid input!");
-                getIndex();
-            }
+
         }
-        return selectedItem;
-    }
+        return selectedItem - 1;
+    } //returns index of item selected, yes the actual INDEX.
 
     //extra methods
     public String getSpaceLeft() {
