@@ -151,9 +151,6 @@ public class Inventory {
             else{
                 System.out.println("Item not removed!");
             }
-
-            displayOptions();
-            System.out.println("\nNext option: ");
         }
     }              //option 2
     public void printInventoryWeight(){
@@ -234,13 +231,10 @@ public class Inventory {
             }
         }
     }
-
     private void upgradeItem(int selectedItem) {
     }
-
     private void addItemDescription(int selectedItem) {
     }
-
     private void removeItem(int selectedItem) {
         Scanner scanner = new Scanner(System.in);
 
@@ -266,22 +260,21 @@ public class Inventory {
         }
 
     }
-
     private void getItemDetails(int selectedItem) {
     }
-
     public void displaySelectionOptions(){
         System.out.println("""
-
                 Select an option:\s
                 1. Details of item
                 2. Remove item
                 3. Add description
                 4. Upgrade item
-                5. Back to main menu""");
+                5. Back to main menu
+                """);
         
     }
     public int getIndex(){
+        //returns index of item selected, yes the actual INDEX.
         System.out.println("Index of item to select: ");
         Scanner scanner = new Scanner(System.in);
         int selectedItem = Integer.parseInt(scanner.nextLine());
@@ -297,7 +290,8 @@ public class Inventory {
 
         }
         return selectedItem - 1;
-    } //returns index of item selected, yes the actual INDEX.
+    }
+
 
     //extra methods
     public String getSpaceLeft() {

@@ -3,37 +3,64 @@ import java.util.Scanner;
 
 public class Test {
     public static void main(String[] args) {
+        //test();
+    }
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("enter something");
-        String input = scanner.nextLine().toUpperCase();
-        System.out.println(input);
-        //Item item = new Item();
+    public static void test() { //Make the program foolproof
+        int number = option1();
+        String selectedChar = option2();
 
-        // String type = "Weapon";
-        // int weight = 5;
-        // int durability = 50;
+        System.out.println("You selected: " + number);
+        System.out.println("You selected: " + selectedChar);
 
-        //Weapon w = new Weapon( true, 5, 50, 10);
-        //System.out.println(w.weight);
-        //System.out.println(w.durability);
+        System.out.println("Goodbye!");
 
-        // super.weight = 5;
-        // super.durability = 50;
+    }
 
-        // int damage = 10;
+    private static int option1() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Give a number: ");
+        int number;
+        try {
+            number = Integer.parseInt(sc.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("You have to give a number!");
+            tryAgain();
+            number = option1();
+        }
+        return number;
+    }
 
-        // Inventory i = new Inventory();
-        // i.addMAToInv();
-        // System.out.println(i.CurrentSize);
-        // System.out.println(i.Size);
+    private static String option2() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Select a, b, or c: ");
+        String selectedChar = sc.nextLine();
+        try {
+            if (!selectedChar.equals("a") && !selectedChar.equals("b") && !selectedChar.equals("c")) {
+                System.out.println("You have to select a, b or c!");
+                tryAgain();
+                selectedChar = option2();
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("You have to give a number!");
+            tryAgain();
+            selectedChar = option2();
+        }
+        return selectedChar;
+    }
 
-        // MagicArmor i = new MagicArmor();
-        // i.addMAToInv();
-        // System.out.println(i.CurrentSize);
-        // System.out.println(i.Size);
-
-        // Main m = new Main();
-        // m.main(args);
+    private static void tryAgain() {
+        System.out.println("Do you wish to try again? (y/n)");
+        Scanner sc = new Scanner(System.in);
+        String answer = sc.nextLine();
+        if(!answer.equals("y")) {
+            if (answer.equals("n")) {
+                System.out.println("Goodbye!");
+                System.exit(0);
+            } else {
+                System.out.println("You have to give a y or n!");
+                tryAgain();
+            }
+        }
     }
 }
