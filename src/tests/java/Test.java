@@ -7,13 +7,15 @@ public class Test {
     }
 
     public static void test() { //Make the program foolproof
-        int number = option1();
-        String selectedChar = option2();
+        //int number = option1();
+        //String selectedChar = option2();
+        //String magical = magicalStatus();
 
-        System.out.println("You selected: " + number);
-        System.out.println("You selected: " + selectedChar);
+        //System.out.println("You selected: " + number);
+        //System.out.println("You selected: " + selectedChar);
+        //System.out.println("You selected: " + magical);
 
-        System.out.println("Goodbye!");
+        //System.out.println("Goodbye!");
 
     }
 
@@ -42,7 +44,7 @@ public class Test {
                 selectedChar = option2();
             }
         } catch (NumberFormatException e) {
-            System.out.println("You have to give a number!");
+            System.out.println("Invalid!");
             tryAgain();
             selectedChar = option2();
         }
@@ -62,5 +64,22 @@ public class Test {
                 tryAgain();
             }
         }
+    }
+
+    private static String magicalStatus() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Is the item magical (y/n): ");
+        String magicalYesNo = sc.nextLine();
+
+        if (magicalYesNo.equals("y")) {
+            magicalYesNo = "true";
+        } else if (magicalYesNo.equals("n")) {
+            magicalYesNo = "false";
+        }else{
+            System.out.println("You must enter either y or n");
+            tryAgain();
+            magicalYesNo = String.valueOf(magicalStatus());
+        }
+        return magicalYesNo;
     }
 }

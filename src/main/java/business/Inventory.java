@@ -13,20 +13,16 @@ public class Inventory {
     ArrayList<Item> items = new ArrayList<>();
 
     //menu1 methods
-    public void menu1(){
-
+    public void menu1() {
         boolean exit = false;
-        while (!exit){
+        while (!exit) {
             try {
                 displayOptions();
                 Scanner scanner = new Scanner(System.in);
                 int option = Integer.parseInt(scanner.nextLine());
 
                 switch (option) {
-                    case 1 -> {
-                        addItem();
-                        menu1();
-                    }
+                    case 1 -> addItem();
                     case 2 -> {
                         quickRemove();
                         menu1();
@@ -54,9 +50,10 @@ public class Inventory {
                 System.out.println("Please enter a valid option");
             }
         }
-            System.out.println("Thank you for using the inventory system!");
+        System.out.println("Thank you for using the inventory system!");
     }
-    public void displayOptions(){
+
+    public void displayOptions() {
         System.out.println("""
                 What would you like to do?
                 1. Add an item
@@ -67,94 +64,59 @@ public class Inventory {
                 8. Exit""");
     }
     public void addItem() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Item name: ");
-        String name = scanner.nextLine();
+        String name = addItemName();
+        String armorWeaponElse = armorWeaponElse();    //Returns type of item (armor, weapon, else)
+        int durability = addItemDurability();          //Returns durability of item
+        int weight = addItemWeight();                  //Returns weight of item
+        String magical = magicalStatus();              //Returns if item is magical or not
 
-        System.out.println("Armor, weapon or else? (a/w/e): ");
-        String armorWeaponElse = scanner.nextLine();
 
-        System.out.println("Item durability: ");
-        int durability = Integer.parseInt(scanner.nextLine());
-
-        System.out.println("Item weight: ");
-        int weight = Integer.parseInt(scanner.nextLine());
-
-        System.out.println("Is the item magical (y/n): ");
-        String magical = scanner.nextLine();
-        boolean isMagic;
-        if(magical.equals("y")){
-            isMagic = true;
-        }else if(magical.equals("n")){
-            isMagic = false;
-        }else {
-            System.out.println("Invalid input");
-            isMagic = false;
-        }
-
-        if (armorWeaponElse.equals("a") && isMagic) { //magic armor
-
-            System.out.println("Specify magic type (fire/water/earth/air/light/dark): ");
-            magicTypeEnum magicType = magicTypeEnum.valueOf(scanner.nextLine().toUpperCase(Locale.ROOT));
-
-            System.out.println("Item armor amount: ");
-            int armorAmount = Integer.parseInt(scanner.nextLine());
-
-            Armor item  = new Armor(name, magicType, weight, durability, armorAmount);
+        if (armorWeaponElse.equals("a") && magical.equals("true")) { //magic armor
+            int armorAmount = addItemArmor();              //Returns armor of item
+            magicTypeEnum magicType = addItemMagicType(); //Returns magic type of item
+            Armor item = new Armor(name, magicType, weight, durability, armorAmount);
             addItemToInv(item);
 
-        } else if (armorWeaponElse.equals("w") && isMagic) { //magic weapon
-            System.out.println("Specify magic type (fire/water/earth/air/light/dark) ");
-            magicTypeEnum magicType = magicTypeEnum.valueOf(scanner.nextLine().toUpperCase(Locale.ROOT));
-
-            System.out.println("Item damage: ");
-            int damage = Integer.parseInt(scanner.nextLine());
-
+        } else if (armorWeaponElse.equals("w") && magical.equals("true")) { //magic weapon
+            int damage = addItemDamage();                  //Returns damage of item
+            magicTypeEnum magicType = addItemMagicType(); //Returns magic type of item
             Weapon item = new Weapon(name, magicType, weight, durability, damage);
             addItemToInv(item);
-
-
         } else if (armorWeaponElse.equals("a")) { //non-magic armor
-            System.out.println("Item armor amount: ");
-            int armorAmount = Integer.parseInt(scanner.nextLine());
-
+            int armorAmount = addItemArmor();              //Returns armor of item
             Armor item = new Armor(name, weight, durability, armorAmount);
             addItemToInv(item);
 
         } else if (armorWeaponElse.equals("w")) { //non-magic weapon
-            System.out.println("Item damage: ");
-            int damage = Integer.parseInt(scanner.nextLine());
+            int damage = addItemDamage();                  //Returns damage of item
+            Weapon item = new Weapon(name, weight, durability, damage);
+            addItemToInv(item);
 
-            Weapon weapon = new Weapon(name, weight, durability, damage);
-            addItemToInv(weapon);
-
-        }else {
+        } else {
             Item item = new Item(name, weight, durability); //Item is not magic
             addItemToInv(item);
         }
     }                 //option 1
-    public void quickRemove(){
+    public void quickRemove() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Index of item to remove: ");
         int removeIndex = Integer.parseInt(scanner.nextLine()) - 1;
-        if(removeIndex > items.size()-1){
+        if (removeIndex > items.size() - 1) {
             System.out.println("Invalid index!");
-        }
-        else{
+        } else {
             currentWeight -= items.get(removeIndex).getWeight();
             System.out.println("Are you sure you want to remove " + items.get(removeIndex).getName() + "? (y/n)");
             if (scanner.nextLine().equals("y")) {
                 items.remove(removeIndex);
                 System.out.println("Item successfully removed!");
-                System.out.println("\n" + getSpaceLeft() +"\n");
-            }
-            else{
+                System.out.println("\n" + getSpaceLeft() + "\n");
+            } else {
                 System.out.println("Item not removed!");
             }
         }
     }              //option 2
-    public void printInventoryWeight(){
-        System.out.println("Current Weight: " + 
+    public void printInventoryWeight() {
+        System.out.println("Current Weight: " +
                 currentWeight + "\n");
     }     //option 3
     public void displayItems() {
@@ -170,13 +132,13 @@ public class Inventory {
                     if (((Armor) item).magicType != null) {
                         System.out.println("Armor: " + ((Armor) item).getArmor() + "\tMagic type: " + ((Armor) item).getMagicType());
 
-                    }else if(((Armor) item).magicType == null){
+                    } else if (((Armor) item).magicType == null) {
                         System.out.println("Armor: " + ((Armor) item).getArmor());
                     }
                 } else if (item instanceof Weapon) {
                     if (((Weapon) item).magicType != null) {
                         System.out.println("Damage: " + ((Weapon) item).getDamage() + "\tMagic type: " + ((Weapon) item).getMagicType());
-                    }else if(((Weapon) item).magicType == null){
+                    } else if (((Weapon) item).magicType == null) {
                         System.out.println("Damage: " + ((Weapon) item).getDamage());
                     }
 
@@ -191,16 +153,16 @@ public class Inventory {
         }
         System.out.println("--------------------------------------------------------------------------------");
     }            //option 4
-    public void selectItem(){
+    public void selectItem() {
         menu2();
     }       //option 5
 
     //menu2 methods
-    public void menu2(){
+    public void menu2() {
         int selectedItem = getIndex();
-        
+
         boolean exit = false;
-        while (!exit){
+        while (!exit) {
             try {
                 Scanner scanner = new Scanner(System.in);
                 displaySelectionOptions();
@@ -224,18 +186,18 @@ public class Inventory {
                     }
                     case 5 -> exit = true;
                 }
-                
+
             } catch (Exception e) {
                 System.out.println("Invalid input" + e);
                 menu2();
             }
         }
     }
-    private void upgradeItem(int selectedItem) {
+    public void upgradeItem(int selectedItem) {
     }
-    private void addItemDescription(int selectedItem) {
+    public void addItemDescription(int selectedItem) {
     }
-    private void removeItem(int selectedItem) {
+    public void removeItem(int selectedItem) {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Are you sure you want to remove " + items.get(selectedItem).getName() + "? (y/n)");
@@ -243,26 +205,25 @@ public class Inventory {
             currentWeight -= items.get(selectedItem).getWeight();
             items.remove(selectedItem);
             System.out.println("Item successfully removed!");
-            System.out.println("\n" + getSpaceLeft() +"\n");
+            System.out.println("\n" + getSpaceLeft() + "\n");
             menu2();
 
-        }
-        else if (scanner.nextLine().equals("n")){
+        } else if (scanner.nextLine().equals("n")) {
             System.out.println("Item was not removed!");
         } else {
             System.out.println("Invalid input!");
             System.out.println("Do you wish to continue?");
             if (scanner.nextLine().equals("y")) {
                 removeItem(selectedItem);
-            }else{
+            } else {
                 menu2();
             }
         }
 
     }
-    private void getItemDetails(int selectedItem) {
+    public void getItemDetails(int selectedItem) {
     }
-    public void displaySelectionOptions(){
+    public void displaySelectionOptions() {
         System.out.println("""
                 Select an option:\s
                 1. Details of item
@@ -271,25 +232,149 @@ public class Inventory {
                 4. Upgrade item
                 5. Back to main menu
                 """);
-        
+
     }
-    public int getIndex(){
+    public int getIndex() {
         //returns index of item selected, yes the actual INDEX.
         System.out.println("Index of item to select: ");
         Scanner scanner = new Scanner(System.in);
         int selectedItem = Integer.parseInt(scanner.nextLine());
-        
+
         if (selectedItem > items.size() || selectedItem < 1) {
             System.out.println("Invalid index!");
             System.out.println("Do you want to try again? (y/n)");
             if (scanner.nextLine().equals("y")) {
                 getIndex();
-            } else if(scanner.nextLine().equals("n")) {
+            } else if (scanner.nextLine().equals("n")) {
                 selectedItem = -1;
             }
 
         }
         return selectedItem - 1;
+    }
+
+    //addItem methods
+    public String addItemName()
+    {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Name of item: ");
+        String name = scanner.nextLine();
+        if (name.equals("")) {
+            System.out.println("Invalid input");
+            name = addItemName();
+        }
+        return name;
+    }
+    public int addItemWeight() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Item weight: ");
+        int weight;
+        try {
+            weight = Integer.parseInt(sc.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("You have to give a number!");
+            tryAgain();
+            weight = addItemWeight();
+        }
+        return weight;
+    }
+    public int addItemDurability() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Item durability: ");
+        int durability;
+        try {
+            durability = Integer.parseInt(sc.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("You have to give a number!");
+            tryAgain();
+            durability = addItemDurability();
+        }
+        return durability;
+    }
+    public String armorWeaponElse() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Armor, weapon or else? (a/w/e): ");
+        String selectedChar = sc.nextLine();
+        try {
+            if (!selectedChar.equals("a") && !selectedChar.equals("w") && !selectedChar.equals("e")) {
+                System.out.println("You have to select a, w or e!");
+                tryAgain();
+                selectedChar = String.valueOf(armorWeaponElse());
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("You have to give a number!");
+            tryAgain();
+            selectedChar = armorWeaponElse();
+        }
+        return selectedChar;
+    }
+    public String magicalStatus() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Is the item magical (y/n): ");
+        String magicalYesNo = sc.nextLine();
+
+        if (magicalYesNo.equals("y")) {
+            magicalYesNo = "true";
+        } else if (magicalYesNo.equals("n")) {
+            magicalYesNo = "false";
+        } else {
+            System.out.println("You must enter either y or n");
+            tryAgain();
+            magicalYesNo = String.valueOf(magicalStatus());
+        }
+        return magicalYesNo;
+    }
+    public magicTypeEnum addItemMagicType() {
+
+        magicTypeEnum magicType;
+
+        try {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Specify magic type (fire/water/earth/air/light/dark): ");
+            magicType = magicTypeEnum.valueOf(sc.nextLine().toUpperCase(Locale.ROOT));
+
+            if (!magicType.equals(magicTypeEnum.FIRE) && !magicType.equals(magicTypeEnum.WATER) && !magicType.equals(magicTypeEnum.EARTH)
+                    && !magicType.equals(magicTypeEnum.AIR) && !magicType.equals(magicTypeEnum.LIGHT) && !magicType.equals(magicTypeEnum.DARK)) {
+                System.out.println("You must enter a valid magic type");
+                tryAgain();
+                magicType = addItemMagicType();
+            } else {
+                magicType = magicTypeEnum.valueOf(magicType.toString().toUpperCase(Locale.ROOT));
+            }
+
+        } catch (Exception e) {
+            System.out.println("You must enter a valid magic type");
+            tryAgain();
+            magicType = addItemMagicType();
+        }
+        return magicType;
+    }
+    public int addItemArmor() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Item armor: ");
+        int damage;
+        try {
+            damage = Integer.parseInt(sc.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("You have to give a number!");
+            tryAgain();
+            damage = addItemWeight();
+        }
+        return damage;
+
+    }
+    public int addItemDamage() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Item damage: ");
+        int damage;
+        try {
+            damage = Integer.parseInt(sc.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("You have to give a number!");
+            tryAgain();
+            damage = addItemWeight();
+        }
+        return damage;
     }
 
 
@@ -302,24 +387,24 @@ public class Inventory {
             items.add(item);
             System.out.println("Item successfully added!");
             currentWeight += item.getWeight();
-        }
-        else {
+        } else {
             System.out.println("Not enough space!");
         }
 
-        System.out.println("\n" + getSpaceLeft() +"\n");
+        System.out.println("\n" + getSpaceLeft() + "\n");
     }
-
-
-
-
-
-
-
-
-
-
-
-
+    public void tryAgain() {
+        System.out.println("Do you wish to try again? (y/n)");
+        Scanner sc = new Scanner(System.in);
+        String answer = sc.nextLine();
+        if (!answer.equals("y")) {
+            if (answer.equals("n")) {
+                System.out.println("Goodbye!");
+                System.exit(0);
+            } else {
+                System.out.println("You have to give a y or n!");
+                tryAgain();
+            }
+        }
+    }
 }
-

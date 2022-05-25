@@ -5,7 +5,7 @@ public class Main {
 
         Inventory inventory = new Inventory(); //create inventory
 
-        inventory.menu1(); //call menu1
+        inventory.menu1();                     //call menu1
 
     }
 }
