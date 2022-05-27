@@ -23,22 +23,10 @@ public class Inventory {
 
                 switch (option) {
                     case 1 -> addItem();
-                    case 2 -> {
-                        quickRemove();
-                        menu1();
-                    }
-                    case 3 -> {
-                        printInventoryWeight();
-                        menu1();
-                    }
-                    case 4 -> {
-                        displayItems();
-                        menu1();
-                    }
-                    case 5 -> {
-                        selectItem();
-                        menu1();
-                    }
+                    case 2 -> quickRemove();
+                    case 3 -> printInventoryWeight();
+                    case 4 -> displayItems();
+                    case 5 -> selectItem();
                     case 8 -> exit = true;
                     default -> {
                         System.out.println("Invalid option");
@@ -52,19 +40,25 @@ public class Inventory {
         }
         System.out.println("Thank you for using the inventory system!");
     }
-
     public void displayOptions() {
         System.out.println("""
-                What would you like to do?
+                ------------------------------------------------
+                MAIN MENU
+                ------------------------------------------------
                 1. Add an item
                 2. Remove an item
                 3. Display the weight of the inventory
                 4. Display the items in the inventory
                 5. Select item
-                8. Exit""");
+                8. Exit
+                ------------------------------------------------""");
     }
     public void addItem() {
         String name = addItemName();
+        if (name.equals("Ruling Ring") || name.equals("One Ring") || name.equals("Great Ring of Power") || name.equals("Isildur's Bane")){
+            System.out.println("You can not wield it! The One Ring answers to Sauron alone, it has no other master!");
+            System.exit(0);
+        }
         String armorWeaponElse = armorWeaponElse();    //Returns type of item (armor, weapon, else)
         int durability = addItemDurability();          //Returns durability of item
         int weight = addItemWeight();                  //Returns weight of item
@@ -96,6 +90,7 @@ public class Inventory {
             Item item = new Item(name, weight, durability); //Item is not magic
             addItemToInv(item);
         }
+        menu1();
     }                 //option 1
     public void quickRemove() {
         Scanner scanner = new Scanner(System.in);
@@ -114,10 +109,11 @@ public class Inventory {
                 System.out.println("Item not removed!");
             }
         }
+        menu1();
     }              //option 2
     public void printInventoryWeight() {
-        System.out.println("Current Weight: " +
-                currentWeight + "\n");
+        System.out.println("Current Weight: " + currentWeight + "\n");
+        menu1();
     }     //option 3
     public void displayItems() {
         int index = 1;
@@ -152,6 +148,7 @@ public class Inventory {
             }
         }
         System.out.println("--------------------------------------------------------------------------------");
+        menu1();
     }            //option 4
     public void selectItem() {
         menu2();
@@ -159,31 +156,23 @@ public class Inventory {
 
     //menu2 methods
     public void menu2() {
-        int selectedItem = getIndex();
+        int selectedItem = getIndex() - 1;
+        System.out.println("You have selected: " + items.get(selectedItem).getName());
 
         boolean exit = false;
         while (!exit) {
+            Scanner scanner = new Scanner(System.in);
+            displaySelectionOptions();
+            int selectedOption = Integer.parseInt(scanner.nextLine());
+
+
+
             try {
-                Scanner scanner = new Scanner(System.in);
-                displaySelectionOptions();
-                int selectedOption = Integer.parseInt(scanner.nextLine());
                 switch (selectedOption) {
-                    case 1 -> {
-                        getItemDetails(selectedItem);
-                        menu2();
-                    }
-                    case 2 -> {
-                        removeItem(selectedItem);
-                        menu2();
-                    }
-                    case 3 -> {
-                        addItemDescription(selectedItem);
-                        menu2();
-                    }
-                    case 4 -> {
-                        upgradeItem(selectedItem);
-                        menu2();
-                    }
+                    case 1 -> getItemDetails(selectedItem);
+                    case 2 -> removeItem(selectedItem);
+                    case 3 -> addItemDescription(selectedItem);
+                    case 4 -> upgradeItem(selectedItem);
                     case 5 -> exit = true;
                 }
 
@@ -196,6 +185,11 @@ public class Inventory {
     public void upgradeItem(int selectedItem) {
     }
     public void addItemDescription(int selectedItem) {
+        System.out.println("Add description of: " + items.get(selectedItem).getName());
+        Scanner sc = new Scanner(System.in);
+        String description = sc.nextLine();
+        items.get(selectedItem).setDescription(description);
+
     }
     public void removeItem(int selectedItem) {
         Scanner scanner = new Scanner(System.in);
@@ -222,35 +216,59 @@ public class Inventory {
 
     }
     public void getItemDetails(int selectedItem) {
+        Item item = items.get(selectedItem);
+        String itemDescription;
+
+        if (item instanceof Armor) {
+            if (((Armor) item).magicType != null) {
+                System.out.println("Armor: " + ((Armor) item).getArmor() + "\tMagic type: " + ((Armor) item).getMagicType());
+
+            } else if (((Armor) item).magicType == null) {
+                System.out.println("Armor: " + ((Armor) item).getArmor());
+            }
+        } else if (item instanceof Weapon) {
+            if (((Weapon) item).magicType != null) {
+                System.out.println("Damage: " + ((Weapon) item).getDamage() + "\tMagic type: " + ((Weapon) item).getMagicType());
+            } else if (((Weapon) item).magicType == null) {
+                System.out.println("Damage: " + ((Weapon) item).getDamage());
+            }
+
+        }
+        System.out.println("Weight: " + item.getWeight() + "\tDurability: " + item.getDurability());
+        itemDescription = item.getDescription();
+        if (itemDescription.equals("")){
+            System.out.println("Description yet to be added...");
+        }else{
+            System.out.println(itemDescription);
+        }
+
+
+
     }
     public void displaySelectionOptions() {
         System.out.println("""
-                Select an option:\s
+                ------------------------------------------------
+                SELECTION MENU
+                ------------------------------------------------
                 1. Details of item
                 2. Remove item
                 3. Add description
                 4. Upgrade item
                 5. Back to main menu
+                ------------------------------------------------
                 """);
 
     }
     public int getIndex() {
-        //returns index of item selected, yes the actual INDEX.
-        System.out.println("Index of item to select: ");
+        System.out.println("No. of item to select: ");
         Scanner scanner = new Scanner(System.in);
         int selectedItem = Integer.parseInt(scanner.nextLine());
 
-        if (selectedItem > items.size() || selectedItem < 1) {
+        if (selectedItem > items.size() + 1 || selectedItem < 1) {
             System.out.println("Invalid index!");
-            System.out.println("Do you want to try again? (y/n)");
-            if (scanner.nextLine().equals("y")) {
-                getIndex();
-            } else if (scanner.nextLine().equals("n")) {
-                selectedItem = -1;
-            }
-
+            tryAgain2();
         }
-        return selectedItem - 1;
+        return selectedItem;
     }
 
     //addItem methods
@@ -372,7 +390,7 @@ public class Inventory {
         } catch (NumberFormatException e) {
             System.out.println("You have to give a number!");
             tryAgain();
-            damage = addItemWeight();
+            damage = addItemDamage();
         }
         return damage;
     }
@@ -405,6 +423,19 @@ public class Inventory {
                 System.out.println("You have to give a y or n!");
                 tryAgain();
             }
+        }
+    }
+    public void tryAgain2(){
+        System.out.println("Do you wish to try again? (y/n)");
+        Scanner sc = new Scanner(System.in);
+        String answer = sc.nextLine();
+        if (answer.equals("y")) {
+            getIndex();
+        }else if (answer.equals("n")) {
+            menu1();
+        } else {
+            System.out.println("You have to give a y or n!");
+            tryAgain();
         }
     }
 }

@@ -7,6 +7,8 @@ public class Item{
     private boolean isMagic;
     private int weight;
     private int durability;
+    private String description = "";
+
 
     public Item(String name, int weight, int durability) {
         this.name = name;
@@ -24,6 +26,12 @@ public class Item{
 
     public int getDurability() {
         return durability;
+    }
+    public void setDescription(String description){
+        this.description = description;
+    }
+    public String getDescription(){
+        return this.description;
     }
 
 }
