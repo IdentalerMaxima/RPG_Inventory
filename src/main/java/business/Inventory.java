@@ -423,8 +423,7 @@ public class Inventory {
         String answer = sc.nextLine();
         if (!answer.equals("y")) {
             if (answer.equals("n")) {
-                System.out.println("Goodbye!");
-                System.exit(0);
+                menu1();
             } else {
                 System.out.println("You have to give a y or n!");
                 tryAgain();
