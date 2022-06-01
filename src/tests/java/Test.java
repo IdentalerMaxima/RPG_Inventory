@@ -4,6 +4,7 @@ import java.util.Scanner;
 public class Test {
     public static void main(String[] args) {
         //test();
+
     }
 
     public static void test() { //Make the program foolproof

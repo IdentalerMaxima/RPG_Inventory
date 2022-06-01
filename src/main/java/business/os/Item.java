@@ -1,12 +1,10 @@
 package business.os;
 
-import business.magicTypeEnum;
-
 public class Item{
-    private String name;
+    private final String name;
     private boolean isMagic;
-    private int weight;
-    private int durability;
+    private final int weight;
+    private final int durability;
     private String description = "";
 
 

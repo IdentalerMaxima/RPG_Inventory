@@ -39,6 +39,7 @@ public class Inventory {
             }
         }
         System.out.println("Thank you for using the inventory system!");
+        //Fio.mentes(items);
     }
     public void displayOptions() {
         System.out.println("""
@@ -172,7 +173,7 @@ public class Inventory {
                     case 1 -> getItemDetails(selectedItem);
                     case 2 -> removeItem(selectedItem);
                     case 3 -> addItemDescription(selectedItem);
-                    case 4 -> upgradeItem(selectedItem);
+//                  case 4 -> upgradeItem(selectedItem);
                     case 5 -> exit = true;
                 }
 
@@ -182,8 +183,13 @@ public class Inventory {
             }
         }
     }
-    public void upgradeItem(int selectedItem) {
-    }
+//    public void upgradeItem(int selectedItem) {
+//
+//
+//
+//
+//        menu2();
+//    }
     public void addItemDescription(int selectedItem) {
         System.out.println("Add description of: " + items.get(selectedItem).getName());
         Scanner sc = new Scanner(System.in);
